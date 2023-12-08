@@ -136,3 +136,59 @@ if __name__ == "__main__":
     app = CalendarApp()
     app.mainloop()
 
+
+# Unit test clas
+import unittest
+class TestCalendarApp(unittest.TestCase):
+    def setUp(self):
+        self.app = CalendarApp()
+        self.business_calendar = self.app.business_calendar
+        self.academic_calendar = self.app.academic_calendar
+        self.personal_calendar = self.app.personal_calendar
+
+    def test_add_event(self):
+        self.business_calendar.add_event("Meeting", 3)
+        self.academic_calendar.add_event("Study Session", 4)
+        self.personal_calendar.add_event("Gym", 2)
+
+        self.assertEqual(len(self.business_calendar.events), 1)
+        self.assertEqual(len(self.academic_calendar.events), 1)
+        self.assertEqual(len(self.personal_calendar.events), 1)
+
+    def test_sort_calendars(self):
+        self.business_calendar.add_event("Meeting", 3)
+        self.business_calendar.add_event("Presentation", 2)
+        self.business_calendar.add_event("Lunch", 5)
+        self.business_calendar.add_event("Conference", 1)
+
+        self.academic_calendar.add_event("Study Session", 4)
+        self.academic_calendar.add_event("Exam", 2)
+        self.academic_calendar.add_event("Research", 5)
+        self.academic_calendar.add_event("Project", 1)
+
+        self.personal_calendar.add_event("Gym", 2)
+        self.personal_calendar.add_event("Dinner", 5)
+        self.personal_calendar.add_event("Movie Night", 3)
+        self.personal_calendar.add_event("Travel", 1)
+
+        self.app.sort_calendars()
+
+        self.assertEqual(self.business_calendar.events[0].rank, 1)
+        self.assertEqual(self.business_calendar.events[1].rank, 2)
+        self.assertEqual(self.business_calendar.events[2].rank, 3)
+        self.assertEqual(self.business_calendar.events[3].rank, 5)
+
+        self.assertEqual(self.academic_calendar.events[0].rank, 1)
+        self.assertEqual(self.academic_calendar.events[1].rank, 2)
+        self.assertEqual(self.academic_calendar.events[2].rank, 4)
+        self.assertEqual(self.academic_calendar.events[3].rank, 5)
+
+        self.assertEqual(self.personal_calendar.events[0].rank, 1)
+        self.assertEqual(self.personal_calendar.events[1].rank, 2)
+        self.assertEqual(self.personal_calendar.events[2].rank, 3)
+        self.assertEqual(self.personal_calendar.events[3].rank, 5)
+
+if __name__ == "__main__":
+    unittest.main()
+
+
